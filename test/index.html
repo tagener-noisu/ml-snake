@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+    <script type="text/javascript" src="../lib/game.js"></script>
+    <style>
+    #test-canvas {
+                 border: solid 1px #111;
+    }
+    </style>
+  </head>
+  <body>
+    <canvas id="test-canvas" width="200" height="200"></canvas>
+    <script>
+    const canvas = document.getElementById("test-canvas");
+    const context = canvas.getContext("2d");
+
+    const field_size = new Vector2D(20, 20);
+    const scale = 10;
+
+    const renderer = new CanvasRender(context, field_size, scale);
+    const gm = GameManager.create(field_size, scale, renderer);
+    gm.run(window, 300);
+    </script>
+  </body>
+</html>
