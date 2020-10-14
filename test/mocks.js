@@ -19,8 +19,8 @@ class SnakeMock extends Mock {
         this.register_call("update", arguments);
     }
 
-    render(renderer) {
-        this.register_call("render", arguments);
+    put(board) {
+        this.register_call("put", arguments);
     }
 
     change_direction(vel) {
@@ -51,8 +51,8 @@ class FoodMock extends Mock {
         this.register_call("update", arguments);
     }
 
-    render(renderer) {
-        this.register_call("render", arguments);
+    put(board) {
+        this.register_call("put", arguments);
     }
 }
 
@@ -82,6 +82,24 @@ class RenderMock extends Mock {
     }
 }
 
+class GameBoardMock extends Mock {
+    set_snake(pos) {
+        this.register_call("set_snake", arguments);
+    }
+
+    render(renderer) {
+        this.register_call("render", arguments);
+    }
+
+    update() {
+        this.register_call("update", arguments);
+    }
+
+    set_food(pos) {
+        this.register_call("set_food", arguments);
+    }
+}
+
 class WindowMock extends Mock {
     addEventListener(event, fn) {
         return this.register_call("addEventListener", arguments);
@@ -98,5 +116,6 @@ module.exports = {
     MockContext: MockContext,
     SnakeMock: SnakeMock,
     FoodMock: FoodMock,
+    GameBoardMock,
     FakeRandom: FakeRandom
 }

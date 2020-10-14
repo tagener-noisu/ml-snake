@@ -4,6 +4,7 @@ const Food = require("../lib/food");
 const GameManager = require("../lib/game_manager");
 const CanvasRender = require("../lib/canvas_render");
 const HumanPlayer = require("../lib/human_player.js");
+const GameBoard = require("../lib/game_board.js");
 
 const {
     SnakeMock,
@@ -11,24 +12,28 @@ const {
     FakeRandom,
     MockContext,
     RenderMock,
+    GameBoardMock,
     WindowMock
 } = require("./mocks.js");
 
 describe("GameManager", () => {
     const field_size = new Vector2D(10, 10);
 
-    it("updates snake, food and render", () => {
+    it("updates game_board, snake, food and render", () => {
         const snake = new SnakeMock(new Vector2D(0, 0));
         const food = new FoodMock(new Vector2D(3, 7));
         const render = new RenderMock();
-        const gm = new GameManager(field_size, snake, food, render);
+        const board = new GameBoardMock();
+        const gm = new GameManager(field_size, snake, food, board, render);
 
+        board.expect_call("update", []);
         snake.expect_call("update", []);
         snake.expect_call("is_dead", [], false);
         food.expect_call("update", []);
         render.expect_call("update", []);
         gm.update();
 
+        board.verify();
         snake.verify();
         food.verify();
         render.verify();
@@ -38,11 +43,13 @@ describe("GameManager", () => {
         const snake = new SnakeMock(new Vector2D(0, 0));
         const food = new FoodMock(new Vector2D(3, 7));
         const render = new RenderMock();
-        const gm = new GameManager(field_size, snake, food, render);
+        const board = new GameBoardMock();
+        const gm = new GameManager(field_size, snake, food, board, render);
 
         gm.game_over();
         gm.update();
 
+        board.verify();
         snake.verify();
         food.verify();
         render.verify();
@@ -52,7 +59,8 @@ describe("GameManager", () => {
         const snake = new SnakeMock(new Vector2D(4, 7));
         const food = new FoodMock(new Vector2D(4, 7));
         const render = new RenderMock();
-        const gm = new GameManager(field_size, snake, food, render);
+        const board = new GameBoardMock();
+        const gm = new GameManager(field_size, snake, food, board, render);
 
         snake.expect_call("grow", []);
         snake.expect_call("update", []);
@@ -82,7 +90,8 @@ describe("GameManager", () => {
         const snake = new SnakeMock(coords);
         const food = new FoodMock(coords);
         const render = new RenderMock();
-        const gm = new GameManager(field_size, snake, food, render);
+        const board = new GameBoardMock();
+        const gm = new GameManager(field_size, snake, food, board, render);
 
         gm.update();
         expect(gm.is_game_over()).toBe(true);
@@ -92,11 +101,12 @@ describe("GameManager", () => {
         const snake = new SnakeMock(new Vector2D(0, 0));
         const food = new FoodMock(new Vector2D(4, 4));
         const render = new RenderMock();
+        const board = new GameBoardMock();
 
         snake.expect_call("update", []);
         snake.expect_call("is_dead", [], true);
 
-        const gm = new GameManager(field_size, snake, food, render);
+        const gm = new GameManager(field_size, snake, food, board, render);
         gm.update();
 
         snake.verify();
@@ -108,14 +118,17 @@ describe("GameManager", () => {
         const snake = new SnakeMock(coords);
         const food = new FoodMock(coords);
         const render = new RenderMock();
-        const gm = new GameManager(field_size, snake, food, render);
+        const board = new GameBoardMock();
+        const gm = new GameManager(field_size, snake, food, board, render);
 
-        snake.expect_call("render", [render]);
-        food.expect_call("render", [render]);
+        snake.expect_call("put", [board]);
+        food.expect_call("put", [board]);
+        board.expect_call("render", [render]);
         gm.render();
 
         snake.verify();
         food.verify();
+        board.verify();
     });
 
     it("runs itself with interval", () => {
@@ -196,21 +209,23 @@ describe("Snake", () => {
         expect(snake.position()).toEqual(velocity);
     });
 
-    it("renders itself", () => {
+    it("puts itself on a game board", () => {
         const snake = new Snake(initial_pos, velocity);
         snake.grow();
         snake.update();
 
-        const render = new RenderMock();
-        render.expect_call("fill", [new Vector2D(1, 0)]);
-        render.expect_call("fill", [new Vector2D(0, 0)]);
+        const board = new GameBoardMock();
+        board.expect_call("set_snake", [new Vector2D(1, 0)]);
+        board.expect_call("set_snake", [new Vector2D(0, 0)]);
 
-        snake.render(render);
-        render.verify();
+        snake.put(board);
+        board.verify();
     });
 
-    it("checks self collision", () => {
+    it("checks self collision on move", () => {
         const snake = new Snake(initial_pos, velocity);
+        expect(snake.is_dead()).toBe(false);
+
         snake.grow();
         snake.update();
         snake.grow();
@@ -219,6 +234,23 @@ describe("Snake", () => {
         snake.update();
 
         expect(snake.is_dead()).toBe(true);
+        snake.update();
+    });
+
+    it("checks self collision on grow", () => {
+        const snake = new Snake(initial_pos, velocity);
+        expect(snake.is_dead()).toBe(false);
+
+        snake.grow();
+        snake.update();
+        snake.grow();
+        snake.update();
+        snake.velocity = snake.velocity.multiply(-1);
+        snake.grow();
+        snake.update();
+
+        expect(snake.is_dead()).toBe(true);
+        snake.update();
     });
 });
 
@@ -265,15 +297,15 @@ describe("Food", () => {
         rg.verify();
     });
 
-    it("renders itself", () => {
+    it("puts itself on a game board", () => {
         const food = Food.create(game_size);
         const pos = food.position();
-        const render = new RenderMock();
-        render.expect_call("fill", [pos]);
+        const board = new GameBoardMock();
+        board.expect_call("set_food", [pos]);
 
-        food.render(render);
+        food.put(board);
 
-        render.verify();
+        board.verify();
     });
 });
 
@@ -336,6 +368,76 @@ describe("HumanPlayer", () => {
         player.keydown(event);
 
         snake.verify();
+    });
+});
+
+describe("GameBoard", () => {
+    const size = new Vector2D(3, 3);
+    const pos = new Vector2D(0, 0);
+
+    it("checks empty cells", () => {
+        const board = new GameBoard(size);
+
+        expect(board.cell(pos)).toEqual("empty");
+    });
+
+    it('checks "out of bound" cells', () => {
+        const board = new GameBoard(size);
+
+        expect(board.cell(new Vector2D(0, 3))).toEqual("out of bound");
+        expect(board.cell(new Vector2D(3, 0))).toEqual("out of bound");
+        expect(board.cell(new Vector2D(-1, 0))).toEqual("out of bound");
+        expect(board.cell(new Vector2D(0, -2))).toEqual("out of bound");
+    });
+
+    it("checks food cells", () => {
+        const board = new GameBoard(size);
+        board.set_food(pos);
+
+        expect(board.cell(pos)).toEqual("food");
+    });
+
+    it("checks snake cells", () => {
+        const board = new GameBoard(size);
+        board.set_snake(pos);
+
+        expect(board.cell(pos)).toEqual("snake");
+    });
+
+    it('it doesn\'t "store out of bounds" cells', () => {
+        const board = new GameBoard(size);
+        const pos = new Vector2D(3, 5);
+        board.set_snake(pos);
+        board.set_food(pos);
+
+        expect(board.snake.length).toEqual(0);
+        expect(board.food.length).toEqual(0);
+    });
+
+    it("clears itself on update", () => {
+        const board = new GameBoard(size);
+        board.set_snake(new Vector2D(0, 1));
+        board.set_food(new Vector2D(2, 1));
+        board.update();
+
+        expect(board.snake.length).toEqual(0);
+        expect(board.food.length).toEqual(0);
+    });
+
+    it("renders itself", () => {
+        const snake_pos = new Vector2D(0, 1);
+        const food_pos = new Vector2D(2, 2);
+        const board = new GameBoard(size);
+
+        board.set_snake(snake_pos);
+        board.set_snake(food_pos);
+
+        const renderer = new RenderMock;
+        renderer.expect_call("fill", [snake_pos]);
+        renderer.expect_call("fill", [food_pos]);
+
+        board.render(renderer);
+        renderer.verify();
     });
 });
 
