@@ -13,30 +13,34 @@ const {
     MockContext,
     RenderMock,
     GameBoardMock,
+    PlayerMock,
     WindowMock
 } = require("./mocks.js");
 
 describe("GameManager", () => {
     const field_size = new Vector2D(10, 10);
 
-    it("updates game_board, snake, food and render", () => {
+    it("updates game_board, snake, food, player and render", () => {
         const snake = new SnakeMock(new Vector2D(0, 0));
         const food = new FoodMock(new Vector2D(3, 7));
         const render = new RenderMock();
         const board = new GameBoardMock();
-        const gm = new GameManager(field_size, snake, food, board, render);
+        const player = new PlayerMock();
+        const gm = new GameManager(field_size, snake, food, board, render, player);
 
         board.expect_call("update", []);
         snake.expect_call("update", []);
         snake.expect_call("is_dead", [], false);
         food.expect_call("update", []);
         render.expect_call("update", []);
+        player.expect_call("update", []);
         gm.update();
 
         board.verify();
         snake.verify();
         food.verify();
         render.verify();
+        player.verify();
     });
 
     it("stops updating it's objects on game over", () => {
@@ -44,7 +48,8 @@ describe("GameManager", () => {
         const food = new FoodMock(new Vector2D(3, 7));
         const render = new RenderMock();
         const board = new GameBoardMock();
-        const gm = new GameManager(field_size, snake, food, board, render);
+        const player = new PlayerMock();
+        const gm = new GameManager(field_size, snake, food, board, render, player);
 
         gm.game_over();
         gm.update();
@@ -60,7 +65,8 @@ describe("GameManager", () => {
         const food = new FoodMock(new Vector2D(4, 7));
         const render = new RenderMock();
         const board = new GameBoardMock();
-        const gm = new GameManager(field_size, snake, food, board, render);
+        const player = new PlayerMock();
+        const gm = new GameManager(field_size, snake, food, board, render, player);
 
         snake.expect_call("grow", []);
         snake.expect_call("update", []);
@@ -91,7 +97,8 @@ describe("GameManager", () => {
         const food = new FoodMock(coords);
         const render = new RenderMock();
         const board = new GameBoardMock();
-        const gm = new GameManager(field_size, snake, food, board, render);
+        const player = new PlayerMock();
+        const gm = new GameManager(field_size, snake, food, board, render, player);
 
         gm.update();
         expect(gm.is_game_over()).toBe(true);
@@ -102,33 +109,37 @@ describe("GameManager", () => {
         const food = new FoodMock(new Vector2D(4, 4));
         const render = new RenderMock();
         const board = new GameBoardMock();
+        const player = new PlayerMock();
 
         snake.expect_call("update", []);
         snake.expect_call("is_dead", [], true);
 
-        const gm = new GameManager(field_size, snake, food, board, render);
+        const gm = new GameManager(field_size, snake, food, board, render, player);
         gm.update();
 
         snake.verify();
         expect(gm.is_game_over()).toBe(true);
     });
 
-    it("renders snake and food", () => {
+    it("renders snake, food and player", () => {
         const coords = new Vector2D(0, 0);
         const snake = new SnakeMock(coords);
         const food = new FoodMock(coords);
         const render = new RenderMock();
         const board = new GameBoardMock();
-        const gm = new GameManager(field_size, snake, food, board, render);
+        const player = new PlayerMock();
+        const gm = new GameManager(field_size, snake, food, board, render, player);
 
         snake.expect_call("put", [board]);
         food.expect_call("put", [board]);
         board.expect_call("render", [render]);
+        player.expect_call("render", [render]);
         gm.render();
 
         snake.verify();
         food.verify();
         board.verify();
+        player.verify();
     });
 
     it("runs itself with interval", () => {
@@ -340,6 +351,23 @@ describe("CanvasRender", () => {
         const render = new CanvasRender(context, field_size, scale);
 
         render.fill(fill_coords);
+
+        context.verify();
+    });
+
+    it("draws a line", () => {
+        const line_x = new Vector2D(0, 0);
+        const line_y = new Vector2D(1, 0);
+        const context = new MockContext();
+        const render = new CanvasRender(context, field_size, scale);
+
+        context.expect_call("beginPath", []);
+        context.expect_call("moveTo", [5, 5]);
+        context.expect_call("lineTo", [15, 5]);
+        context.expect_call("stroke", []);
+        context.expect_call("closePath", []);
+
+        render.line(line_x, line_y);
 
         context.verify();
     });

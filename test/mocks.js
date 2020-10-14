@@ -70,6 +70,26 @@ class MockContext extends Mock {
     fillRect(x, y, w, h) {
         return this.register_call("fillRect", arguments);
     }
+
+    beginPath() {
+        return this.register_call("beginPath", arguments);
+    }
+
+    closePath() {
+        return this.register_call("closePath", arguments);
+    }
+
+    moveTo(x, y) {
+        return this.register_call("moveTo", arguments);
+    }
+
+    lineTo(x, y) {
+        return this.register_call("lineTo", arguments);
+    }
+
+    stroke() {
+        return this.register_call("stroke", arguments);
+    }
 }
 
 class RenderMock extends Mock {
@@ -110,6 +130,16 @@ class WindowMock extends Mock {
     }
 }
 
+class PlayerMock extends Mock {
+    update() {
+        this.register_call("update", arguments);
+    }
+
+    render(renderer) {
+        this.register_call("render", arguments);
+    }
+}
+
 module.exports = {
     WindowMock: WindowMock,
     RenderMock: RenderMock,
@@ -117,5 +147,6 @@ module.exports = {
     SnakeMock: SnakeMock,
     FoodMock: FoodMock,
     GameBoardMock,
+    PlayerMock,
     FakeRandom: FakeRandom
 }
