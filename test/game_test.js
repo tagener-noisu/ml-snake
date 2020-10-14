@@ -1,11 +1,9 @@
-const {
-    GameManager,
-    Snake,
-    Food,
-    Vector2D,
-    CanvasRender,
-    HumanPlayer
-} = require("../lib/game.js");
+const Vector2D = require("../lib/vector2d");
+const Snake = require("../lib/snake");
+const Food = require("../lib/food");
+const GameManager = require("../lib/game_manager");
+const CanvasRender = require("../lib/canvas_render");
+const HumanPlayer = require("../lib/human_player.js");
 
 const {
     SnakeMock,
