@@ -42,7 +42,7 @@ describe("GameManager", () => {
         const render = new RenderMock();
         const gm = new GameManager(field_size, snake, food, render);
 
-        gm.game_over = true;
+        gm.game_over();
         gm.update();
 
         snake.verify();
@@ -86,11 +86,8 @@ describe("GameManager", () => {
         const render = new RenderMock();
         const gm = new GameManager(field_size, snake, food, render);
 
-        let game_over = false;
-        gm.on_game_over = () => { game_over = true; };
         gm.update();
-        expect(gm.game_over).toBe(true);
-        expect(game_over).toBe(true);
+        expect(gm.is_game_over()).toBe(true);
     });
 
     it("finishes the game when snake eats itself", () => {
@@ -105,7 +102,7 @@ describe("GameManager", () => {
         gm.update();
 
         snake.verify();
-        expect(gm.game_over).toBe(true);
+        expect(gm.is_game_over()).toBe(true);
     });
 
     it("renders snake and food", () => {
