@@ -404,14 +404,14 @@ describe("GameBoard", () => {
         const board = new GameBoard(size);
         board.set_food(pos);
 
-        expect(board.cell(pos)).toEqual("food");
+        expect(board.cell(new Vector2D(0, 0))).toEqual("food");
     });
 
     it("checks snake cells", () => {
         const board = new GameBoard(size);
         board.set_snake(pos);
 
-        expect(board.cell(pos)).toEqual("snake");
+        expect(board.cell(new Vector2D(0, 0))).toEqual("snake");
     });
 
     it('it doesn\'t "store out of bounds" cells', () => {
