@@ -252,6 +252,16 @@ describe("Snake", () => {
         expect(snake.is_dead()).toBe(true);
         snake.update();
     });
+
+    it("grows and changes direction at the same time", () => {
+        const snake = new Snake(initial_pos, velocity);
+        snake.grow();
+        snake.change_direction(new Vector2D(0, 1));
+        snake.update();
+
+        expect(snake.position()).toEqual(new Vector2D(0, 1));
+        expect(snake.body.length).toEqual(2);
+    });
 });
 
 describe("Food", () => {
