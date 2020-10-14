@@ -27,8 +27,8 @@ class SnakeMock extends Mock {
         this.register_call("change_direction", arguments);
     }
 
-    ate_itself() {
-        return this.register_call("ate_itself", arguments);
+    is_dead() {
+        return this.register_call("is_dead", arguments);
     }
 }
 

@@ -26,7 +26,7 @@ describe("GameManager", () => {
         const gm = new GameManager(field_size, snake, food, render);
 
         snake.expect_call("update", []);
-        snake.expect_call("ate_itself", [], false);
+        snake.expect_call("is_dead", [], false);
         food.expect_call("update", []);
         render.expect_call("update", []);
         gm.update();
@@ -58,7 +58,7 @@ describe("GameManager", () => {
 
         snake.expect_call("grow", []);
         snake.expect_call("update", []);
-        snake.expect_call("ate_itself", [], false);
+        snake.expect_call("is_dead", [], false);
         food.expect_call("change_position", []);
         food.expect_call("update", []);
         gm.update();
@@ -99,7 +99,7 @@ describe("GameManager", () => {
         const render = new RenderMock();
 
         snake.expect_call("update", []);
-        snake.expect_call("ate_itself", [], true);
+        snake.expect_call("is_dead", [], true);
 
         const gm = new GameManager(field_size, snake, food, render);
         gm.update();
@@ -215,10 +215,15 @@ describe("Snake", () => {
     });
 
     it("checks self collision", () => {
-        const snake = new Snake(initial_pos);
-        snake.body.push(initial_pos);
+        const snake = new Snake(initial_pos, velocity);
+        snake.grow();
+        snake.update();
+        snake.grow();
+        snake.update();
+        snake.velocity = snake.velocity.multiply(-1);
+        snake.update();
 
-        expect(snake.ate_itself()).toBe(true);
+        expect(snake.is_dead()).toBe(true);
     });
 });
 
