@@ -3,17 +3,19 @@
   "version": "0.1.0",
   "scripts": {
     "test": "jest",
-    "testwatch": "jest --watch"
+    "testwatch": "jest --watch",
+	"build": "webpack"
   },
-  "keywords": [
-  ],
+  "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "jest": "23.0.1"
+    "jest": "23.0.1",
+    "webpack": "5.0.0",
+    "webpack-cli": "4.0.0"
   },
   "jest": {
-      "testRegex": "_(spec|test).",
-      "verbose": false
+    "testRegex": "_(spec|test).",
+    "verbose": false
   }
 }
