@@ -23,13 +23,13 @@ describe("GameManager", () => {
         const snake = new SnakeMock(new Vector2D(0, 0));
         const food = new FoodMock(new Vector2D(3, 7));
         const render = new RenderMock();
-        const cm = new GameManager(field_size, snake, food, render);
+        const gm = new GameManager(field_size, snake, food, render);
 
         snake.expect_call("update", []);
         snake.expect_call("ate_itself", [], false);
         food.expect_call("update", []);
         render.expect_call("update", []);
-        cm.update();
+        gm.update();
 
         snake.verify();
         food.verify();
@@ -40,10 +40,10 @@ describe("GameManager", () => {
         const snake = new SnakeMock(new Vector2D(0, 0));
         const food = new FoodMock(new Vector2D(3, 7));
         const render = new RenderMock();
-        const cm = new GameManager(field_size, snake, food, render);
+        const gm = new GameManager(field_size, snake, food, render);
 
-        cm.game_over = true;
-        cm.update();
+        gm.game_over = true;
+        gm.update();
 
         snake.verify();
         food.verify();
@@ -54,29 +54,29 @@ describe("GameManager", () => {
         const snake = new SnakeMock(new Vector2D(4, 7));
         const food = new FoodMock(new Vector2D(4, 7));
         const render = new RenderMock();
-        const cm = new GameManager(field_size, snake, food, render);
+        const gm = new GameManager(field_size, snake, food, render);
 
         snake.expect_call("grow", []);
         snake.expect_call("update", []);
         snake.expect_call("ate_itself", [], false);
         food.expect_call("change_position", []);
         food.expect_call("update", []);
-        cm.update();
+        gm.update();
 
         snake.verify();
         food.verify();
     });
 
     it("checks bounds", () => {
-        const cm = new GameManager(field_size);
+        const gm = new GameManager(field_size);
 
-        expect(cm.out_of_bounds(new Vector2D(0, 0))).toBe(false);
-        expect(cm.out_of_bounds(new Vector2D(9, 9))).toBe(false);
+        expect(gm.out_of_bounds(new Vector2D(0, 0))).toBe(false);
+        expect(gm.out_of_bounds(new Vector2D(9, 9))).toBe(false);
 
-        expect(cm.out_of_bounds(new Vector2D(-1, 0))).toBe(true);
-        expect(cm.out_of_bounds(new Vector2D(10, 0))).toBe(true);
-        expect(cm.out_of_bounds(new Vector2D(0, -1))).toBe(true);
-        expect(cm.out_of_bounds(new Vector2D(0, 10))).toBe(true);
+        expect(gm.out_of_bounds(new Vector2D(-1, 0))).toBe(true);
+        expect(gm.out_of_bounds(new Vector2D(10, 0))).toBe(true);
+        expect(gm.out_of_bounds(new Vector2D(0, -1))).toBe(true);
+        expect(gm.out_of_bounds(new Vector2D(0, 10))).toBe(true);
     });
 
     it("check bounds on update", () => {
@@ -84,12 +84,12 @@ describe("GameManager", () => {
         const snake = new SnakeMock(coords);
         const food = new FoodMock(coords);
         const render = new RenderMock();
-        const cm = new GameManager(field_size, snake, food, render);
+        const gm = new GameManager(field_size, snake, food, render);
 
         let game_over = false;
-        cm.on_game_over = () => { game_over = true; };
-        cm.update();
-        expect(cm.game_over).toBe(true);
+        gm.on_game_over = () => { game_over = true; };
+        gm.update();
+        expect(gm.game_over).toBe(true);
         expect(game_over).toBe(true);
     });
 
@@ -101,11 +101,11 @@ describe("GameManager", () => {
         snake.expect_call("update", []);
         snake.expect_call("ate_itself", [], true);
 
-        const cm = new GameManager(field_size, snake, food, render);
-        cm.update();
+        const gm = new GameManager(field_size, snake, food, render);
+        gm.update();
 
         snake.verify();
-        expect(cm.game_over).toBe(true);
+        expect(gm.game_over).toBe(true);
     });
 
     it("renders snake and food", () => {
@@ -113,11 +113,11 @@ describe("GameManager", () => {
         const snake = new SnakeMock(coords);
         const food = new FoodMock(coords);
         const render = new RenderMock();
-        const cm = new GameManager(field_size, snake, food, render);
+        const gm = new GameManager(field_size, snake, food, render);
 
         snake.expect_call("render", [render]);
         food.expect_call("render", [render]);
-        cm.render();
+        gm.render();
 
         snake.verify();
         food.verify();
@@ -126,10 +126,10 @@ describe("GameManager", () => {
     it("runs itself with interval", () => {
         const interval = 200;
         const window = new WindowMock();
-        const cm = new GameManager(field_size);
+        const gm = new GameManager(field_size);
 
-        window.expect_call("setInterval", [cm.tick, interval]);
-        cm.run(window, interval);
+        window.expect_call("setInterval", [gm.tick, interval]);
+        gm.run(window, interval);
 
         window.verify();
     });
