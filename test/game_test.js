@@ -182,6 +182,20 @@ describe("Vector2D", () => {
 
         expect(x.multiply(3)).toEqual(new Vector2D(6, 6));
     });
+
+    it("turns left", () => {
+        const vec = new Vector2D(1, 0);
+        const result = vec.turn_left();
+
+        expect(result.equals(new Vector2D(0, -1))).toBe(true);
+    });
+
+    it("turns right", () => {
+        const vec = new Vector2D(0, -1);
+        const result = vec.turn_right();
+
+        expect(result.equals(new Vector2D(1, 0))).toBe(true);
+    });
 });
 
 describe("Snake", () => {
@@ -510,19 +524,5 @@ describe("Player", () => {
         
         board.verify();
         renderer.verify();
-    });
-
-    it("converts vectors", () => {
-        const player = new Player();
-
-        let vel = new Vector2D(1, 0);
-        let result = player.turns(vel);
-        expect(result.left.equals(new Vector2D(0, -1))).toBe(true);
-        expect(result.right.equals(new Vector2D(0, 1))).toBe(true);
-
-        vel = new Vector2D(0, 1);
-        result = player.turns(vel);
-        expect(result.left.equals(new Vector2D(1, 0))).toBe(true);
-        expect(result.right.equals(new Vector2D(-1, 0))).toBe(true);
     });
 });

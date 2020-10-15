@@ -124,10 +124,6 @@ class GameBoardMock extends Mock {
         this.register_call("set_food", arguments);
     }
 
-    cell(pos) {
-        return this.register_call("cell", arguments);
-    }
-
     next_nonempty_cell(position, velocity) {
         return this.register_call("next_nonempty_cell", arguments);
     }
