@@ -478,6 +478,15 @@ describe("GameBoard", () => {
         board.render(renderer);
         renderer.verify();
     });
+
+    it("returns next nonempty cell", () => {
+        const board = new GameBoard(size);
+        board.set_food(new Vector2D(2, 0));
+
+        const forward = board.next_nonempty_cell(
+            new Vector2D(0, 0), new Vector2D(1, 0));
+        expect(forward.equals(new Vector2D(2, 0))).toBe(true);
+    });
 });
 
 describe("Player", () => {
@@ -488,10 +497,12 @@ describe("Player", () => {
         const board = new GameBoardMock();
         const renderer = new RenderMock();
 
-        board.expect_call("cell", [new Vector2D(1, 0)], "empty");
-        board.expect_call("cell", [new Vector2D(2, 0)], "empty");
-        board.expect_call("cell", [new Vector2D(3, 0)], "food");
+        board.expect_call("next_nonempty_cell", [snake_pos, new Vector2D(1, 0)], new Vector2D(3, 0));
+        board.expect_call("next_nonempty_cell", [snake_pos, new Vector2D(0, -1)], new Vector2D(0, -1));
+        board.expect_call("next_nonempty_cell", [snake_pos, new Vector2D(-0, 1)], new Vector2D(0, 2));
         renderer.expect_call("line", [snake_pos, new Vector2D(3, 0)]);
+        renderer.expect_call("line", [snake_pos, new Vector2D(0, -1)]);
+        renderer.expect_call("line", [snake_pos, new Vector2D(0, 2)]);
 
         const player = new Player(snake, board);
         player.update();
@@ -499,5 +510,19 @@ describe("Player", () => {
         
         board.verify();
         renderer.verify();
+    });
+
+    it("converts vectors", () => {
+        const player = new Player();
+
+        let vel = new Vector2D(1, 0);
+        let result = player.turns(vel);
+        expect(result.left.equals(new Vector2D(0, -1))).toBe(true);
+        expect(result.right.equals(new Vector2D(0, 1))).toBe(true);
+
+        vel = new Vector2D(0, 1);
+        result = player.turns(vel);
+        expect(result.left.equals(new Vector2D(1, 0))).toBe(true);
+        expect(result.right.equals(new Vector2D(-1, 0))).toBe(true);
     });
 });

@@ -127,6 +127,10 @@ class GameBoardMock extends Mock {
     cell(pos) {
         return this.register_call("cell", arguments);
     }
+
+    next_nonempty_cell(position, velocity) {
+        return this.register_call("next_nonempty_cell", arguments);
+    }
 }
 
 class WindowMock extends Mock {
