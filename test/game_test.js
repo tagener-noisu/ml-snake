@@ -3,6 +3,7 @@ const Snake = require("../lib/snake");
 const Food = require("../lib/food");
 const GameManager = require("../lib/game_manager");
 const CanvasRender = require("../lib/canvas_render");
+const Player = require("../lib/player.js");
 const HumanPlayer = require("../lib/human_player.js");
 const GameBoard = require("../lib/game_board.js");
 
@@ -479,5 +480,24 @@ describe("GameBoard", () => {
     });
 });
 
-describe("AIPlayer", () => {
+describe("Player", () => {
+    it("renders itself", () => {
+        const snake_pos = new Vector2D(0, 0);
+        const snake_velocity = new Vector2D(1, 0);
+        const snake = new SnakeMock(snake_pos, snake_velocity);
+        const board = new GameBoardMock();
+        const renderer = new RenderMock();
+
+        board.expect_call("cell", [new Vector2D(1, 0)], "empty");
+        board.expect_call("cell", [new Vector2D(2, 0)], "empty");
+        board.expect_call("cell", [new Vector2D(3, 0)], "food");
+        renderer.expect_call("line", [snake_pos, new Vector2D(3, 0)]);
+
+        const player = new Player(snake, board);
+        player.update();
+        player.render(renderer, true);
+        
+        board.verify();
+        renderer.verify();
+    });
 });

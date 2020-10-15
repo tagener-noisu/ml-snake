@@ -1,10 +1,11 @@
 const Mock = require("./mock");
 
 class SnakeMock extends Mock {
-    constructor(head) {
+    constructor(head, velocity) {
         super();
 
         this.head = head;
+        this.velocity = velocity;
     }
 
     position() {
@@ -100,6 +101,10 @@ class RenderMock extends Mock {
     update() {
         return this.register_call("update", arguments);
     }
+
+    line(from, to) {
+        return this.register_call("line", arguments);
+    }
 }
 
 class GameBoardMock extends Mock {
@@ -117,6 +122,10 @@ class GameBoardMock extends Mock {
 
     set_food(pos) {
         this.register_call("set_food", arguments);
+    }
+
+    cell(pos) {
+        return this.register_call("cell", arguments);
     }
 }
 
