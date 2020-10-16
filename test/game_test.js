@@ -80,6 +80,19 @@ describe("GameManager", () => {
         food.verify();
     });
 
+    it("updates score when snake eats food", () => {
+        const snake = new SnakeMock(new Vector2D(4, 7));
+        const food = new FoodMock(new Vector2D(4, 7));
+        const render = new RenderMock();
+        const board = new GameBoardMock();
+        const player = new PlayerMock();
+        const gm = new GameManager(field_size, snake, food, board, render, player);
+
+        expect(gm.score()).toBe(0);
+        gm.update();
+        expect(gm.score()).toBe(1);
+    });
+
     it("checks bounds", () => {
         const gm = new GameManager(field_size);
 
