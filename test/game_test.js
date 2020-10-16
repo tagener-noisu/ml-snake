@@ -463,8 +463,7 @@ describe("GameBoard", () => {
         board.set_snake(pos);
         board.set_food(pos);
 
-        expect(board.snake.length).toEqual(0);
-        expect(board.food.length).toEqual(0);
+        expect(board.board.filter(x => x !== undefined).length).toBe(0);
     });
 
     it("clears itself on update", () => {
@@ -473,8 +472,7 @@ describe("GameBoard", () => {
         board.set_food(new Vector2D(2, 1));
         board.update();
 
-        expect(board.snake.length).toEqual(0);
-        expect(board.food.length).toEqual(0);
+        expect(board.board.filter(x => x !== undefined).length).toBe(0);
     });
 
     it("renders itself", () => {
@@ -483,7 +481,7 @@ describe("GameBoard", () => {
         const board = new GameBoard(size);
 
         board.set_snake(snake_pos);
-        board.set_snake(food_pos);
+        board.set_food(food_pos);
 
         const renderer = new RenderMock;
         renderer.expect_call("fill", [snake_pos]);
