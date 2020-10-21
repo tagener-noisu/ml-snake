@@ -1,56 +1,5 @@
-const Mock = require("./mock");
-
-class ChromosomeMock extends Mock {
-    fitness() {
-        return this.register_call("fitness", arguments);
-    }
-}
-
-class GeneticAlgorithmMock extends Mock {
-    fitness_computed(chromosome, fitness) {
-        return this.register_call("fitness_computed", arguments);
-    }
-}
-
-class Chromosome {
-    compute_fitness() {
-        return undefined;
-    }
-
-    fitness(callback) {
-        callback(this, this.compute_fitness());
-    }
-}
-
-class GeneticAlgorithm {
-    constructor(chromosomes) {
-        this.chromosomes = chromosomes;
-        this.fitnesses = [];
-
-        this.fitness_computed = this.fitness_computed.bind(this);
-    }
-
-    fitness_computed(chromosome, fitness) {
-        this.fitnesses.push({chromosome, fitness});
-
-        if (this.chromosomes.length !== 0)
-            this.compute_fitness();
-        else
-            this.compute_fitness_done();
-    }
-
-    compute_fitness_done() {
-    }
-
-    compute_fitness() {
-        const [hd, ...tl] = this.chromosomes;
-
-        if (hd !== undefined) {
-            this.chromosomes = tl;
-            hd.fitness(this.fitness_computed);
-        }
-    }
-}
+const {Chromosome, GeneticAlgorithm} = require("../lib/genetic_algorithm");
+const {ChromosomeMock, GeneticAlgorithmMock} = require("./mocks");
 
 describe("GenticAlgorithm", () => {
     it("calls fitness() on first chromosome", () => {

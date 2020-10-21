@@ -149,13 +149,27 @@ class PlayerMock extends Mock {
     }
 }
 
+class ChromosomeMock extends Mock {
+    fitness() {
+        return this.register_call("fitness", arguments);
+    }
+}
+
+class GeneticAlgorithmMock extends Mock {
+    fitness_computed(chromosome, fitness) {
+        return this.register_call("fitness_computed", arguments);
+    }
+}
+
 module.exports = {
-    WindowMock: WindowMock,
-    RenderMock: RenderMock,
-    MockContext: MockContext,
-    SnakeMock: SnakeMock,
-    FoodMock: FoodMock,
+    WindowMock,
+    RenderMock,
+    MockContext,
+    SnakeMock,
+    FoodMock,
     GameBoardMock,
     PlayerMock,
-    FakeRandom: FakeRandom
+    FakeRandom,
+    ChromosomeMock,
+    GeneticAlgorithmMock
 }
