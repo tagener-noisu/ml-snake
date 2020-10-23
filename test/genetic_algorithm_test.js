@@ -1,10 +1,16 @@
 const {Chromosome, GeneticAlgorithm} = require("../lib/genetic_algorithm");
-const {ChromosomeMock, GeneticAlgorithmMock} = require("./mocks");
+const {ChromosomeMock, GeneticAlgorithmMock, PopulationMockInitalizer} = require("./mocks");
 
 describe("GenticAlgorithm", () => {
+    it("calls gets inital population from initalizer", () => {
+        const initializer = new PopulationMockInitalizer();
+        initializer.expect_call("get_population", []);
+        const ga = new GeneticAlgorithm(initializer);
+    });
+
     it("calls fitness() on first chromosome", () => {
         const chromosome = new ChromosomeMock();
-        const ga = new GeneticAlgorithm([chromosome]);
+        const ga = GeneticAlgorithm.create_by_population([chromosome]);
 
         chromosome.expect_call("fitness", [ga.fitness_computed]);
         ga.compute_fitness();

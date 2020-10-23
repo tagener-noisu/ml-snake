@@ -161,6 +161,12 @@ class GeneticAlgorithmMock extends Mock {
     }
 }
 
+class PopulationMockInitalizer extends Mock {
+    get_population() {
+        return this.register_call("get_population", arguments);
+    }
+}
+
 module.exports = {
     WindowMock,
     RenderMock,
@@ -171,5 +177,6 @@ module.exports = {
     PlayerMock,
     FakeRandom,
     ChromosomeMock,
-    GeneticAlgorithmMock
+    GeneticAlgorithmMock,
+    PopulationMockInitalizer
 }
