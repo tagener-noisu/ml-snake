@@ -2,7 +2,7 @@ const {Chromosome, GeneticAlgorithm} = require("../lib/genetic_algorithm");
 const {ChromosomeMock, GeneticAlgorithmMock, PopulationMockInitalizer} = require("./mocks");
 
 describe("GenticAlgorithm", () => {
-    it("calls gets inital population from initalizer", () => {
+    it("gets inital population from initalizer", () => {
         const initializer = new PopulationMockInitalizer();
         initializer.expect_call("get_population", []);
         const ga = new GeneticAlgorithm(initializer);
