@@ -8,12 +8,29 @@ describe("GenticAlgorithm", () => {
         const ga = new GeneticAlgorithm(initializer);
     });
 
+    it("doesn't do anything if no chromosomes left", () => {
+        const ga = GeneticAlgorithm.create_by_population([]);
+
+        expect(() => ga.compute_fitness()).not.toThrow();
+    });
+
     it("calls fitness() on first chromosome", () => {
         const chromosome = new ChromosomeMock();
         const ga = GeneticAlgorithm.create_by_population([chromosome]);
 
         chromosome.expect_call("fitness", [ga.fitness_computed]);
         ga.compute_fitness();
+        ga.fitness_computed(chromosome, 1337);
+
+        chromosome.verify();
+    });
+
+    it("calls fitness() on next chromosome on callback", () => {
+        const chromosome = new ChromosomeMock();
+        const ga = GeneticAlgorithm.create_by_population([chromosome]);
+
+        chromosome.expect_call("fitness", [ga.fitness_computed]);
+        ga.fitness_computed();
 
         chromosome.verify();
     });
