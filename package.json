@@ -11,6 +11,7 @@
   "license": "MIT",
   "devDependencies": {
     "jest": "23.0.1",
+    "math.js": "^1.1.46",
     "webpack": "5.0.0",
     "webpack-cli": "4.0.0"
   },
