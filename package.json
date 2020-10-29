@@ -19,6 +19,5 @@
   "jest": {
     "testRegex": "_(spec|test).",
     "verbose": false
-  },
-  "dependencies": {}
+  }
 }
