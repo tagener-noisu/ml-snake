@@ -9,6 +9,20 @@ describe("Snake", () => {
     const initial_pos = new Vector2D(0, 0);
     const velocity = new Vector2D(1, 0);
 
+    it("returns it's velocity", () => {
+        const snake = new Snake(initial_pos, velocity);
+
+        expect(velocity.equals(snake.velocity())).toBe(true);
+    });
+
+    it("sets it's velocity", () => {
+        const new_velocity = new Vector2D(0, 1);
+        const snake = new Snake(initial_pos, velocity);
+
+        snake.set_velocity(new_velocity);
+        expect(new_velocity.equals(snake.velocity())).toBe(true);
+    });
+
     it("moves on update", () => {
         const snake = new Snake(initial_pos, velocity);
 
@@ -63,7 +77,7 @@ describe("Snake", () => {
         snake.update();
         snake.grow();
         snake.update();
-        snake.velocity = snake.velocity.multiply(-1);
+        snake.set_velocity(snake.velocity().multiply(-1));
         snake.update();
 
         expect(snake.is_dead()).toBe(true);
@@ -78,7 +92,7 @@ describe("Snake", () => {
         snake.update();
         snake.grow();
         snake.update();
-        snake.velocity = snake.velocity.multiply(-1);
+        snake.set_velocity(snake.velocity().multiply(-1));
         snake.grow();
         snake.update();
 

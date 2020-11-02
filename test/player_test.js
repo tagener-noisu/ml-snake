@@ -10,8 +10,7 @@ const {
 describe("Player", () => {
     it("renders itself", () => {
         const snake_pos = new Vector2D(0, 0);
-        const snake_velocity = new Vector2D(1, 0);
-        const snake = new SnakeMock(snake_pos, snake_velocity);
+        const snake = new SnakeMock(snake_pos);
         const board = new GameBoardMock();
         const renderer = new RenderMock();
 
@@ -21,6 +20,7 @@ describe("Player", () => {
         renderer.expect_call("line", [snake_pos, new Vector2D(3, 0)]);
         renderer.expect_call("line", [snake_pos, new Vector2D(0, -1)]);
         renderer.expect_call("line", [snake_pos, new Vector2D(0, 2)]);
+        snake.expect_call("velocity", [], new Vector2D(1, 0));
 
         const player = new Player(snake, board);
         player.update();
