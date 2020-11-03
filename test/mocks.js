@@ -1,14 +1,8 @@
 const Mock = require("./mock");
 
 class SnakeMock extends Mock {
-    constructor(head) {
-        super();
-
-        this.head = head;
-    }
-
     position() {
-        return this.head;
+        return this.register_call("position", arguments);
     }
 
     velocity() {
