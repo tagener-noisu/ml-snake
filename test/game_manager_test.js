@@ -16,7 +16,7 @@ describe("GameManager", () => {
 
     it("updates game_board, snake, food, player and render", () => {
         const snake = new SnakeMock();
-        const food = new FoodMock(new Vector2D(3, 7));
+        const food = new FoodMock();
         const render = new RenderMock();
         const board = new GameBoardMock();
         const player = new PlayerMock();
@@ -26,6 +26,7 @@ describe("GameManager", () => {
         snake.expect_call("position", [], initial_pos);
         snake.expect_call("update", []);
         snake.expect_call("is_dead", [], false);
+        food.expect_call("position", [], new Vector2D(3, 7));
         food.expect_call("update", []);
         render.expect_call("update", []);
         player.expect_call("update", []);
@@ -56,17 +57,19 @@ describe("GameManager", () => {
     });
 
     it("calls snake.grow() and food.change_position() when snake eats food", () => {
+        const pos = new Vector2D(4, 7);
         const snake = new SnakeMock();
-        const food = new FoodMock(new Vector2D(4, 7));
+        const food = new FoodMock();
         const render = new RenderMock();
         const board = new GameBoardMock();
         const player = new PlayerMock();
         const gm = new GameManager(field_size, snake, food, board, render, player);
 
-        snake.expect_call("position", [], new Vector2D(4, 7));
+        snake.expect_call("position", [], pos);
         snake.expect_call("grow", []);
         snake.expect_call("update", []);
         snake.expect_call("is_dead", [], false);
+        food.expect_call("position", [], pos);
         food.expect_call("change_position", []);
         food.expect_call("update", []);
         gm.update();
@@ -76,14 +79,16 @@ describe("GameManager", () => {
     });
 
     it("updates score when snake eats food", () => {
-        const snake = new SnakeMock(new Vector2D(4, 7));
-        const food = new FoodMock(new Vector2D(4, 7));
+        const pos = new Vector2D(4, 7);
+        const snake = new SnakeMock(pos);
+        const food = new FoodMock(pos);
         const render = new RenderMock();
         const board = new GameBoardMock();
         const player = new PlayerMock();
         const gm = new GameManager(field_size, snake, food, board, render, player);
 
-        snake.expect_call("position", [], new Vector2D(4, 7));
+        snake.expect_call("position", [], pos);
+        food.expect_call("position", [], pos);
 
         expect(gm.score()).toBe(0);
         gm.update();
@@ -103,15 +108,16 @@ describe("GameManager", () => {
     });
 
     it("check bounds on update", () => {
-        const coords = new Vector2D(11, 0);
+        const pos = new Vector2D(11, 0);
         const snake = new SnakeMock();
-        const food = new FoodMock(coords);
+        const food = new FoodMock();
         const render = new RenderMock();
         const board = new GameBoardMock();
         const player = new PlayerMock();
         const gm = new GameManager(field_size, snake, food, board, render, player);
 
-        snake.expect_call("position", [], coords);
+        snake.expect_call("position", [], pos);
+        food.expect_call("position", [], pos);
 
         gm.update();
         expect(gm.is_game_over()).toBe(true);
@@ -119,11 +125,12 @@ describe("GameManager", () => {
 
     it("finishes the game when snake eats itself", () => {
         const snake = new SnakeMock();
-        const food = new FoodMock(new Vector2D(4, 4));
+        const food = new FoodMock();
         const render = new RenderMock();
         const board = new GameBoardMock();
         const player = new PlayerMock();
 
+        food.expect_call("position", [], new Vector2D(4, 4));
         snake.expect_call("position", [], initial_pos);
         snake.expect_call("update", []);
         snake.expect_call("is_dead", [], true);

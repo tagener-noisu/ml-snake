@@ -38,7 +38,7 @@ class FoodMock extends Mock {
     }
 
     position() {
-        return this.pos;
+        return this.register_call("position", arguments);
     }
 
     change_position() {
