@@ -152,6 +152,16 @@ class ChromosomeMock extends Mock {
     }
 }
 
+class ChromosomeFake  {
+    constructor(fitness) {
+        this.fitness_value = fitness;
+    }
+
+    fitness(callback) {
+        callback(this, this.fitness_value);
+    }
+}
+
 class GeneticAlgorithmMock extends Mock {
     fitness_computed(chromosome, fitness) {
         return this.register_call("fitness_computed", arguments);
@@ -174,6 +184,7 @@ module.exports = {
     PlayerMock,
     FakeRandom,
     ChromosomeMock,
+    ChromosomeFake,
     GeneticAlgorithmMock,
     PopulationMockInitalizer
 }
