@@ -125,8 +125,13 @@ describe("GenticAlgorithm", () => {
 
 describe("Chromosome", () => {
     it("calls back after computing fitness", () => {
-        const chromosome = new Chromosome();
-        chromosome.compute_fitness = () => 1337;
+        class FakeChromosome extends Chromosome {
+            compute_fitness() {
+                return 1337;
+            }
+        }
+
+        const chromosome = new FakeChromosome();
         const ga = new GeneticAlgorithmMock();
 
         ga.expect_call("fitness_computed", [chromosome, 1337]);
