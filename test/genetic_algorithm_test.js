@@ -63,12 +63,12 @@ describe("GenticAlgorithm", () => {
         const two = mocks[1];
         const random = new FakeRandom();
 
-        random.expect_call("generate", [0, 2], 0);
-        random.expect_call("generate", [0, 2], 1);
-        random.expect_call("generate", [0, 100], 43);
-        random.expect_call("generate", [0, 2], 1);
-        random.expect_call("generate", [0, 2], 0);
-        random.expect_call("generate", [0, 100], 78);
+        random.expect_call("generate_int", [0, 2], 0);
+        random.expect_call("generate_int", [0, 2], 1);
+        random.expect_call("generate_float", [0, 1], 0.43);
+        random.expect_call("generate_int", [0, 2], 1);
+        random.expect_call("generate_int", [0, 2], 0);
+        random.expect_call("generate_float", [0, 1], 0.78);
 
         one.expect_call("crossover", [two], new ChromosomeMock());
         two.expect_call("crossover", [one], new ChromosomeMock());
@@ -89,10 +89,10 @@ describe("GenticAlgorithm", () => {
         const random = new FakeRandom();
         const ga = GeneticAlgorithm.create_by_population([], random);
 
-        random.expect_call("generate", [0, 2], 0);
-        random.expect_call("generate", [0, 2], 0);
-        random.expect_call("generate", [0, 2], 1);
-        random.expect_call("generate", [0, 100], 43);
+        random.expect_call("generate_int", [0, 2], 0);
+        random.expect_call("generate_int", [0, 2], 0);
+        random.expect_call("generate_int", [0, 2], 1);
+        random.expect_call("generate_float", [0, 1], 0.43);
 
         one.expect_call("crossover", [two], new ChromosomeMock());
 
@@ -109,9 +109,9 @@ describe("GenticAlgorithm", () => {
         const random = new FakeRandom();
         const ga = GeneticAlgorithm.create_by_population([], random, 0.2);
 
-        random.expect_call("generate", [0, 2], 0);
-        random.expect_call("generate", [0, 2], 1);
-        random.expect_call("generate", [0, 100], 19);
+        random.expect_call("generate_int", [0, 2], 0);
+        random.expect_call("generate_int", [0, 2], 1);
+        random.expect_call("generate_float", [0, 1], 0.19);
         one.expect_call("crossover", [two], child);
         child.expect_call("mutate", []);
 

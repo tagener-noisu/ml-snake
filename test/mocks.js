@@ -55,8 +55,12 @@ class FoodMock extends Mock {
 }
 
 class FakeRandom extends Mock {
-    generate(min, max) {
-        return this.register_call("generate", arguments);
+    generate_int(min, max) {
+        return this.register_call("generate_int", arguments);
+    }
+
+    generate_float(min, max) {
+        return this.register_call("generate_float", arguments);
     }
 }
 
