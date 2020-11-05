@@ -61,13 +61,14 @@ describe("GenticAlgorithm", () => {
         const mocks = fitnesses.map(x => x.chromosome);
         const one = mocks[0];
         const two = mocks[1];
-        const three = mocks[2];
         const random = new FakeRandom();
 
         random.expect_call("generate", [0, 2], 0);
         random.expect_call("generate", [0, 2], 1);
+        random.expect_call("generate", [0, 100], 43);
         random.expect_call("generate", [0, 2], 1);
         random.expect_call("generate", [0, 2], 0);
+        random.expect_call("generate", [0, 100], 78);
 
         one.expect_call("crossover", [two], new ChromosomeMock());
         two.expect_call("crossover", [one], new ChromosomeMock());
@@ -80,7 +81,6 @@ describe("GenticAlgorithm", () => {
         random.verify();
         one.verify();
         two.verify();
-        three.verify();
     });
 
     it("doesn't cross over the same breeder", () => {
@@ -92,6 +92,7 @@ describe("GenticAlgorithm", () => {
         random.expect_call("generate", [0, 2], 0);
         random.expect_call("generate", [0, 2], 0);
         random.expect_call("generate", [0, 2], 1);
+        random.expect_call("generate", [0, 100], 43);
 
         one.expect_call("crossover", [two], new ChromosomeMock());
 
@@ -99,6 +100,26 @@ describe("GenticAlgorithm", () => {
 
         random.verify();
         one.verify();
+    });
+
+    it("calls mutate()", () => {
+        const one = new ChromosomeMock();
+        const two = new ChromosomeMock();
+        const child = new ChromosomeMock();
+        const random = new FakeRandom();
+        const ga = GeneticAlgorithm.create_by_population([], random, 0.2);
+
+        random.expect_call("generate", [0, 2], 0);
+        random.expect_call("generate", [0, 2], 1);
+        random.expect_call("generate", [0, 100], 19);
+        one.expect_call("crossover", [two], child);
+        child.expect_call("mutate", []);
+
+        ga.random_parents_crossover(2, [one, two], random);
+
+        random.verify();
+        one.verify();
+        child.verify();
     });
 });
 

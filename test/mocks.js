@@ -151,6 +151,10 @@ class ChromosomeMock extends Mock {
         return this.register_call("fitness", arguments);
     }
 
+    mutate() {
+        return this.register_call("mutate", arguments);
+    }
+
     crossover(other) {
         return this.register_call("crossover", arguments);
     }
