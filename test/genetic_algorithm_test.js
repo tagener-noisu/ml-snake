@@ -1,5 +1,6 @@
 const {Chromosome, GeneticAlgorithm} = require("../lib/genetic_algorithm");
 const {
+    FakeRandom,
     ChromosomeMock,
     ChromosomeFake,
     GeneticAlgorithmMock,
@@ -8,7 +9,7 @@ const {
 describe("GenticAlgorithm", () => {
     it("gets inital population from initalizer", () => {
         const initializer = new PopulationMockInitalizer();
-        initializer.expect_call("get_population", []);
+        initializer.expect_call("get_population", [], []);
         const ga = new GeneticAlgorithm(initializer);
     });
 
@@ -51,6 +52,53 @@ describe("GenticAlgorithm", () => {
         ga.sort_by_fitness();
         const result2 = ga.top();
         expect(result2.chromosome).toEqual(two);
+    });
+
+    it("crosses over random chromosomes", () => {
+        const fitnesses = [1,2,3,4].map(i => (
+            {chromosome: new ChromosomeMock(), fitness: i}
+        ));
+        const mocks = fitnesses.map(x => x.chromosome);
+        const one = mocks[0];
+        const two = mocks[1];
+        const three = mocks[2];
+        const random = new FakeRandom();
+
+        random.expect_call("generate", [0, 2], 0);
+        random.expect_call("generate", [0, 2], 1);
+        random.expect_call("generate", [0, 2], 1);
+        random.expect_call("generate", [0, 2], 0);
+
+        one.expect_call("crossover", [two], new ChromosomeMock());
+        two.expect_call("crossover", [one], new ChromosomeMock());
+
+        const ga = GeneticAlgorithm.create_by_population([], random);
+        ga.fitnesses = fitnesses;
+        ga.population_size = 4;
+        ga.breed();
+
+        random.verify();
+        one.verify();
+        two.verify();
+        three.verify();
+    });
+
+    it("doesn't cross over the same breeder", () => {
+        const one = new ChromosomeMock();
+        const two = new ChromosomeMock();
+        const random = new FakeRandom();
+        const ga = GeneticAlgorithm.create_by_population([], random);
+
+        random.expect_call("generate", [0, 2], 0);
+        random.expect_call("generate", [0, 2], 0);
+        random.expect_call("generate", [0, 2], 1);
+
+        one.expect_call("crossover", [two], new ChromosomeMock());
+
+        ga.random_parents_crossover(2, [one, two], random);
+
+        random.verify();
+        one.verify();
     });
 });
 
