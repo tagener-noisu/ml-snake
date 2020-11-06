@@ -2,7 +2,7 @@ const Vector2D = require("../lib/vector2d");
 const Food = require("../lib/food");
 
 const {
-    FakeRandom,
+    MockRandom,
     GameBoardMock,
 } = require("./mocks.js");
 
@@ -13,7 +13,7 @@ describe("Food", () => {
     it("sets it's coordinates randomly", () => {
         const max_x = game_size.x() - 1;
         const max_y = game_size.y() - 1;
-        const rg = new FakeRandom();
+        const rg = new MockRandom();
         rg.expect_call("generate_int", [0, max_x], initial_pos.x());
         rg.expect_call("generate_int", [0, max_y], initial_pos.y());
 
@@ -35,7 +35,7 @@ describe("Food", () => {
         const max_x = game_size.x() - 1;
         const max_y = game_size.y() - 1;
         const new_pos = new Vector2D(9, 3);
-        const rg = new FakeRandom();
+        const rg = new MockRandom();
         rg.expect_call("generate_int", [0, max_x], initial_pos.x());
         rg.expect_call("generate_int", [0, max_y], initial_pos.y());
         rg.expect_call("generate_int", [0, max_x], new_pos.x());

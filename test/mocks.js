@@ -54,7 +54,7 @@ class FoodMock extends Mock {
     }
 }
 
-class FakeRandom extends Mock {
+class MockRandom extends Mock {
     generate_int(min, max) {
         return this.register_call("generate_int", arguments);
     }
@@ -194,7 +194,7 @@ module.exports = {
     FoodMock,
     GameBoardMock,
     PlayerMock,
-    FakeRandom,
+    MockRandom,
     ChromosomeMock,
     ChromosomeFake,
     GeneticAlgorithmMock,

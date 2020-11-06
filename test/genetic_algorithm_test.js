@@ -1,6 +1,6 @@
 const {Chromosome, GeneticAlgorithm} = require("../lib/genetic_algorithm");
 const {
-    FakeRandom,
+    MockRandom,
     ChromosomeMock,
     ChromosomeFake,
     GeneticAlgorithmMock,
@@ -61,7 +61,7 @@ describe("GenticAlgorithm", () => {
         const mocks = fitnesses.map(x => x.chromosome);
         const one = mocks[0];
         const two = mocks[1];
-        const random = new FakeRandom();
+        const random = new MockRandom();
 
         random.expect_call("generate_int", [0, 2], 0);
         random.expect_call("generate_int", [0, 2], 1);
@@ -86,7 +86,7 @@ describe("GenticAlgorithm", () => {
     it("doesn't cross over the same breeder", () => {
         const one = new ChromosomeMock();
         const two = new ChromosomeMock();
-        const random = new FakeRandom();
+        const random = new MockRandom();
         const ga = GeneticAlgorithm.create_by_population([], random);
 
         random.expect_call("generate_int", [0, 2], 0);
@@ -106,7 +106,7 @@ describe("GenticAlgorithm", () => {
         const one = new ChromosomeMock();
         const two = new ChromosomeMock();
         const child = new ChromosomeMock();
-        const random = new FakeRandom();
+        const random = new MockRandom();
         const ga = GeneticAlgorithm.create_by_population([], random, 0.2);
 
         random.expect_call("generate_int", [0, 2], 0);
