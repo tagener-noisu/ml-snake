@@ -2,7 +2,6 @@ const {Chromosome, GeneticAlgorithm} = require("../lib/genetic_algorithm");
 const {
     MockRandom,
     ChromosomeMock,
-    ChromosomeFake,
     GeneticAlgorithmMock,
     PopulationMockInitalizer} = require("./mocks");
 
@@ -13,45 +12,26 @@ describe("GenticAlgorithm", () => {
         const ga = new GeneticAlgorithm(initializer);
     });
 
-    it("doesn't do anything if no chromosomes left", () => {
-        const ga = GeneticAlgorithm.create_by_population([]);
-
-        expect(() => ga.compute_fitness()).not.toThrow();
-    });
-
-    it("calls fitness() on first chromosome", () => {
+    it("computes fitnesses asyncronously", async () => {
         const chromosome = new ChromosomeMock();
+        chromosome.expect_call("fitness", [], Promise.resolve(1337));
+
         const ga = GeneticAlgorithm.create_by_population([chromosome]);
+        const fitnesses = await ga.compute_fitness();
 
-        chromosome.expect_call("fitness", [ga.fitness_computed]);
-        ga.compute_fitness();
-        ga.fitness_computed(chromosome, 1337);
-
-        chromosome.verify();
-    });
-
-    it("calls fitness() on next chromosome on callback", () => {
-        const chromosome = new ChromosomeMock();
-        const ga = GeneticAlgorithm.create_by_population([chromosome]);
-
-        chromosome.expect_call("fitness", [ga.fitness_computed]);
-        ga.fitness_computed();
-
+        expect(fitnesses).toEqual([{chromosome: chromosome, fitness: 1337}]);
         chromosome.verify();
     });
 
     it("sorts chromosomes by fitness", () => {
-        const one = new ChromosomeFake(10);
-        const two = new ChromosomeFake(20);
-        const ga = GeneticAlgorithm.create_by_population([one, two]);
-        ga.compute_fitness();
+        const ga = GeneticAlgorithm.create_by_population([]);
+        const fitnesses = [
+            {chromosome: "one", fitness: 10},
+            {chromosome: "two", fitness: 20}
+        ];
 
-        const result = ga.top();
-        expect(result.chromosome).toEqual(one);
-
-        ga.sort_by_fitness();
-        const result2 = ga.top();
-        expect(result2.chromosome).toEqual(two);
+        const result = ga.sort_by_fitness(fitnesses);
+        expect(result[0].fitness).toEqual(20);
     });
 
     it("crosses over random chromosomes", () => {
@@ -74,9 +54,7 @@ describe("GenticAlgorithm", () => {
         two.expect_call("crossover", [one], new ChromosomeMock());
 
         const ga = GeneticAlgorithm.create_by_population([], random);
-        ga.fitnesses = fitnesses;
-        ga.population_size = 4;
-        ga.breed();
+        ga.breed(fitnesses);
 
         random.verify();
         one.verify();
