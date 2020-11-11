@@ -24,13 +24,12 @@ describe("GenticAlgorithm", () => {
     });
 
     it("sorts chromosomes by fitness", () => {
-        const ga = GeneticAlgorithm.create_by_population([]);
         const fitnesses = [
             {chromosome: "one", fitness: 10},
             {chromosome: "two", fitness: 20}
         ];
 
-        const result = ga.sort_by_fitness(fitnesses);
+        const result = GeneticAlgorithm.sort_by_fitness(fitnesses);
         expect(result[0].fitness).toEqual(20);
     });
 
@@ -53,8 +52,7 @@ describe("GenticAlgorithm", () => {
         one.expect_call("crossover", [two], new ChromosomeMock());
         two.expect_call("crossover", [one], new ChromosomeMock());
 
-        const ga = GeneticAlgorithm.create_by_population([], random);
-        ga.breed(fitnesses);
+        GeneticAlgorithm.breed(fitnesses, random, 0.3);
 
         random.verify();
         one.verify();
@@ -65,7 +63,6 @@ describe("GenticAlgorithm", () => {
         const one = new ChromosomeMock();
         const two = new ChromosomeMock();
         const random = new MockRandom();
-        const ga = GeneticAlgorithm.create_by_population([], random);
 
         random.expect_call("generate_int", [0, 2], 0);
         random.expect_call("generate_int", [0, 2], 0);
@@ -74,7 +71,7 @@ describe("GenticAlgorithm", () => {
 
         one.expect_call("crossover", [two], new ChromosomeMock());
 
-        ga.random_parents_crossover(2, [one, two], random);
+        GeneticAlgorithm.random_parents_crossover(2, [one, two], random, 0.3);
 
         random.verify();
         one.verify();
@@ -85,7 +82,6 @@ describe("GenticAlgorithm", () => {
         const two = new ChromosomeMock();
         const child = new ChromosomeMock();
         const random = new MockRandom();
-        const ga = GeneticAlgorithm.create_by_population([], random, 0.2);
 
         random.expect_call("generate_int", [0, 2], 0);
         random.expect_call("generate_int", [0, 2], 1);
@@ -93,7 +89,7 @@ describe("GenticAlgorithm", () => {
         one.expect_call("crossover", [two], child);
         child.expect_call("mutate", []);
 
-        ga.random_parents_crossover(2, [one, two], random);
+        GeneticAlgorithm.random_parents_crossover(2, [one, two], random, 0.3);
 
         random.verify();
         one.verify();
