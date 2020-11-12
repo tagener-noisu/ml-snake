@@ -186,6 +186,20 @@ class MockNeuralNet extends Mock {
     }
 }
 
+class MockMath extends Mock {
+    random() {
+        return this.register_call("random", arguments);
+    }
+
+    multiply() {
+        return this.register_call("multiply", arguments);
+    }
+
+    add() {
+        return this.register_call("add", arguments);
+    }
+}
+
 module.exports = {
     WindowMock,
     RenderMock,
@@ -198,5 +212,6 @@ module.exports = {
     ChromosomeMock,
     GeneticAlgorithmMock,
     MockNeuralNet,
+    MockMath,
     PopulationMockInitalizer
 }
