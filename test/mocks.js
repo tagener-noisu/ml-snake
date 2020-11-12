@@ -128,6 +128,10 @@ class GameBoardMock extends Mock {
     next_nonempty_cell(position, velocity) {
         return this.register_call("next_nonempty_cell", arguments);
     }
+
+    cell(position) {
+        return this.register_call("cell", arguments);
+    }
 }
 
 class WindowMock extends Mock {
@@ -176,6 +180,12 @@ class PopulationMockInitalizer extends Mock {
     }
 }
 
+class MockNeuralNet extends Mock {
+    run() {
+        return this.register_call("run", arguments);
+    }
+}
+
 module.exports = {
     WindowMock,
     RenderMock,
@@ -187,5 +197,6 @@ module.exports = {
     MockRandom,
     ChromosomeMock,
     GeneticAlgorithmMock,
+    MockNeuralNet,
     PopulationMockInitalizer
 }
