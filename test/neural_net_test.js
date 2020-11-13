@@ -19,9 +19,18 @@ describe("NeuralNet", () => {
         math.expect_call("random", [[5, 3], -1, 1]);
         math.expect_call("random", [[3], -1, 1]);
 
-        const nn = new NeuralNet(math, [3, 5, 5, 3]);
+        const nn = NeuralNet.random([3, 5, 5, 3], undefined, math);
 
         math.verify();
+    });
+
+    it("initalizes by vector", () => {
+        const weigths = [1, 2, 3, 4, 5, 6];
+        const nn = NeuralNet.from_vector([1, 3], weigths);
+
+        const result = nn.to_vector();
+
+        expect(result).toEqual(weigths);
     });
 
     it("propagates forward", () => {
@@ -41,7 +50,7 @@ describe("NeuralNet", () => {
         math.expect_call("multiply", ["layer1", "weights2"], "multiply2");
         math.expect_call("add", ["multiply2", "biases2"], "add2");
 
-        const nn = new NeuralNet(math, [2, 4, 4], activation_fn);
+        const nn = NeuralNet.random([2, 4, 4], activation_fn, math);
         const result = nn.run("input");
 
         math.verify();
@@ -59,7 +68,7 @@ describe("NeuralNet", () => {
         math.expect_call("random", [[2], -1, 1], [5, 6]);
         math.expect_call("reshape", [weigths, [4]], [1, 2, 3, 4]);
 
-        const nn = new NeuralNet(math, [2, 2]);
+        const nn = NeuralNet.random([2, 2], undefined, math);
         const vec = nn.to_vector();
 
         expect(vec).toEqual([1,2,3,4,5,6]);
