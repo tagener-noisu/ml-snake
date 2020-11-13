@@ -1,5 +1,5 @@
 const Vector2D = require("../lib/vector2d");
-const AiPlayer = require("../lib/ai_player");
+const AIPlayer = require("../lib/ai_player");
 const GameBoard = require("../lib/game_board");
 
 const {
@@ -8,7 +8,7 @@ const {
     GameBoardMock
 } = require("./mocks.js");
 
-describe("AiPlayer", () => {
+describe("AIPlayer", () => {
     const position = new Vector2D(0, 0);
     const velocity = new Vector2D(1, 0);
     const turn_threshold = 0.8;
@@ -49,7 +49,7 @@ describe("AiPlayer", () => {
         const nn = new MockNeuralNet();
         nn.expect_call("run", nn_args, [0.81, 0.1, 0.11]);
 
-        const player = new AiPlayer(snake, game_board, nn, turn_threshold);
+        const player = new AIPlayer(snake, game_board, nn, turn_threshold);
         player.update();
 
         snake.verify();
@@ -59,7 +59,7 @@ describe("AiPlayer", () => {
 
     it("doesn't do anything if all probabilies less than threshold", () => {
         const snake = new SnakeMock();
-        const player = new AiPlayer(snake, null, null, turn_threshold);
+        const player = new AIPlayer(snake, null, null, turn_threshold);
         player.evaluate(position, velocity, [0.1, 0.1, 0.0]);
 
         snake.verify();
@@ -67,7 +67,7 @@ describe("AiPlayer", () => {
 
     it("doesn't do anything if don't turn probability is greater", () => {
         const snake = new SnakeMock();
-        const player = new AiPlayer(snake, null, null, turn_threshold);
+        const player = new AIPlayer(snake, null, null, turn_threshold);
         player.evaluate(position, velocity, [0.82, 0.81, 0.0]);
 
         snake.verify();
@@ -77,7 +77,7 @@ describe("AiPlayer", () => {
         const snake = new SnakeMock();
         snake.expect_call("change_direction", [velocity.turn_left()]);
 
-        const player = new AiPlayer(snake, null, null, turn_threshold);
+        const player = new AIPlayer(snake, null, null, turn_threshold);
         player.evaluate(position, velocity, [0.42, 0.81, 0.0]);
 
         snake.verify();
@@ -87,7 +87,7 @@ describe("AiPlayer", () => {
         const snake = new SnakeMock();
         snake.expect_call("change_direction", [velocity.turn_right()]);
 
-        const player = new AiPlayer(snake, null, null, turn_threshold);
+        const player = new AIPlayer(snake, null, null, turn_threshold);
         player.evaluate(position, velocity, [0.42, 0.81, 0.82]);
 
         snake.verify();
