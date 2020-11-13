@@ -51,4 +51,19 @@ describe("NeuralNet", () => {
 
         expect(result).toBe("layer2");
     });
+
+    it("returns vector representation", () => {
+        const weigths = [[1, 2], [3, 4]];
+        const math = new MockMath();
+        math.expect_call("random", [[2, 2], -1, 1], weigths);
+        math.expect_call("random", [[2], -1, 1], [5, 6]);
+        math.expect_call("reshape", [weigths, [4]], [1, 2, 3, 4]);
+
+        const nn = new NeuralNet(math, [2, 2]);
+        const vec = nn.to_vector();
+
+        expect(vec).toEqual([1,2,3,4,5,6]);
+
+        math.verify();
+    });
 });

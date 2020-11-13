@@ -198,6 +198,10 @@ class MockMath extends Mock {
     add() {
         return this.register_call("add", arguments);
     }
+
+    reshape() {
+        return this.register_call("reshape", arguments);
+    }
 }
 
 module.exports = {
