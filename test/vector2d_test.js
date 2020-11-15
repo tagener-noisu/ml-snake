@@ -12,7 +12,7 @@ describe("Vector2D", () => {
         const x = new Vector2D(0, 1);
         const y = new Vector2D(4, 7);
 
-        expect(x.plus(y)).toEqual(new Vector2D(4, 8));
+        expect(x.add(y)).toEqual(new Vector2D(4, 8));
     });
 
     it("checks equality", () => {
