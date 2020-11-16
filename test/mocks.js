@@ -204,6 +204,12 @@ class MockMath extends Mock {
     }
 }
 
+class GameManagerMock extends Mock {
+    run() {
+        return this.register_call("run", arguments);
+    }
+}
+
 module.exports = {
     WindowMock,
     RenderMock,
@@ -217,5 +223,6 @@ module.exports = {
     GeneticAlgorithmMock,
     MockNeuralNet,
     MockMath,
+    GameManagerMock,
     PopulationMockInitalizer
 }
