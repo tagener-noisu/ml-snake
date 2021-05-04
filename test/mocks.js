@@ -138,18 +138,6 @@ class PlayerMock extends Mock {
     }
 }
 
-class GeneticAlgorithmMock extends Mock {
-    fitness_computed(chromosome, fitness) {
-        return this.register_call("fitness_computed", arguments);
-    }
-}
-
-class PopulationMockInitalizer extends Mock {
-    get_population() {
-        return this.register_call("get_population", arguments);
-    }
-}
-
 class MockNeuralNet extends Mock {
     run() {
         return this.register_call("run", arguments);
@@ -188,9 +176,7 @@ module.exports = {
     FoodMock,
     GameBoardMock,
     PlayerMock,
-    GeneticAlgorithmMock,
     MockNeuralNet,
     MockMath,
     GameManagerMock,
-    PopulationMockInitalizer
 }
