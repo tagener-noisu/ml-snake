@@ -138,20 +138,6 @@ class PlayerMock extends Mock {
     }
 }
 
-class ChromosomeMock extends Mock {
-    fitness() {
-        return this.register_call("fitness", arguments);
-    }
-
-    mutate() {
-        return this.register_call("mutate", arguments);
-    }
-
-    crossover(other) {
-        return this.register_call("crossover", arguments);
-    }
-}
-
 class GeneticAlgorithmMock extends Mock {
     fitness_computed(chromosome, fitness) {
         return this.register_call("fitness_computed", arguments);
@@ -202,7 +188,6 @@ module.exports = {
     FoodMock,
     GameBoardMock,
     PlayerMock,
-    ChromosomeMock,
     GeneticAlgorithmMock,
     MockNeuralNet,
     MockMath,

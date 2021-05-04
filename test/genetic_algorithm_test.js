@@ -1,7 +1,6 @@
 const {Chromosome, GeneticAlgorithm} = require("../lib/genetic_algorithm");
 const Mock = require("./mock");
 const {
-    ChromosomeMock,
     GeneticAlgorithmMock,
     PopulationMockInitalizer} = require("./mocks");
 
@@ -13,7 +12,7 @@ describe("GenticAlgorithm", () => {
     });
 
     it("computes fitnesses asyncronously", async () => {
-        const chromosome = new ChromosomeMock();
+        const chromosome = new Mock();
         chromosome.expect_call("fitness", [], Promise.resolve(1337));
 
         const ga = GeneticAlgorithm.create_by_population([chromosome]);
@@ -35,7 +34,7 @@ describe("GenticAlgorithm", () => {
 
     it("crosses over random chromosomes", () => {
         const fitnesses = [1,2,3,4].map(i => (
-            {chromosome: new ChromosomeMock(), fitness: i}
+            {chromosome: new Mock(), fitness: i}
         ));
         const mocks = fitnesses.map(x => x.chromosome);
         const one = mocks[0];
@@ -49,8 +48,8 @@ describe("GenticAlgorithm", () => {
         random.expect_call("generate_int", [0, 2], 0);
         random.expect_call("generate_float", [0, 1], 0.78);
 
-        one.expect_call("crossover", [two], new ChromosomeMock());
-        two.expect_call("crossover", [one], new ChromosomeMock());
+        one.expect_call("crossover", [two], new Mock());
+        two.expect_call("crossover", [one], new Mock());
 
         GeneticAlgorithm.breed(fitnesses, random, 0.3);
 
@@ -60,8 +59,8 @@ describe("GenticAlgorithm", () => {
     });
 
     it("doesn't cross over the same breeder", () => {
-        const one = new ChromosomeMock();
-        const two = new ChromosomeMock();
+        const one = new Mock();
+        const two = new Mock();
         const random = new Mock();
 
         random.expect_call("generate_int", [0, 2], 0);
@@ -69,7 +68,7 @@ describe("GenticAlgorithm", () => {
         random.expect_call("generate_int", [0, 2], 1);
         random.expect_call("generate_float", [0, 1], 0.43);
 
-        one.expect_call("crossover", [two], new ChromosomeMock());
+        one.expect_call("crossover", [two], new Mock());
 
         GeneticAlgorithm.random_parents_crossover(2, [one, two], random, 0.3);
 
@@ -78,9 +77,9 @@ describe("GenticAlgorithm", () => {
     });
 
     it("calls mutate()", () => {
-        const one = new ChromosomeMock();
-        const two = new ChromosomeMock();
-        const child = new ChromosomeMock();
+        const one = new Mock();
+        const two = new Mock();
+        const child = new Mock();
         const random = new Mock();
 
         random.expect_call("generate_int", [0, 2], 0);
