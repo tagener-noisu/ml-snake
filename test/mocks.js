@@ -48,18 +48,7 @@ class FoodMock extends Mock {
     }
 }
 
-class PlayerMock extends Mock {
-    update() {
-        this.register_call("update", arguments);
-    }
-
-    render(renderer) {
-        this.register_call("render", arguments);
-    }
-}
-
 module.exports = {
     SnakeMock,
     FoodMock,
-    PlayerMock,
 }
