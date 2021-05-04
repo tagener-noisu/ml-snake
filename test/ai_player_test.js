@@ -1,11 +1,11 @@
 const Vector2D = require("../lib/vector2d");
 const AIPlayer = require("../lib/ai_player");
 const GameBoard = require("../lib/game_board");
+const Mock = require("./mock");
 
 const {
     MockNeuralNet,
     SnakeMock,
-    GameBoardMock
 } = require("./mocks.js");
 
 describe("AIPlayer", () => {
@@ -18,7 +18,7 @@ describe("AIPlayer", () => {
         snake.expect_call("position", [], position);
         snake.expect_call("velocity", [], velocity);
 
-        const game_board = new GameBoardMock();
+        const game_board = new Mock();
         const expect_next_nonempty = (velocity, pos, type) => {
             game_board.expect_call(
                 "next_nonempty_cell", [position, velocity], pos);

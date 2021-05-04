@@ -48,32 +48,6 @@ class FoodMock extends Mock {
     }
 }
 
-class GameBoardMock extends Mock {
-    set_snake(pos) {
-        this.register_call("set_snake", arguments);
-    }
-
-    render(renderer) {
-        this.register_call("render", arguments);
-    }
-
-    update() {
-        this.register_call("update", arguments);
-    }
-
-    set_food(pos) {
-        this.register_call("set_food", arguments);
-    }
-
-    next_nonempty_cell(position, velocity) {
-        return this.register_call("next_nonempty_cell", arguments);
-    }
-
-    cell(position) {
-        return this.register_call("cell", arguments);
-    }
-}
-
 class WindowMock extends Mock {
     addEventListener(event, fn) {
         return this.register_call("addEventListener", arguments);
@@ -128,7 +102,6 @@ module.exports = {
     WindowMock,
     SnakeMock,
     FoodMock,
-    GameBoardMock,
     PlayerMock,
     MockNeuralNet,
     MockMath,
