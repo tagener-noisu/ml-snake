@@ -12,6 +12,12 @@ class Mock {
 
         this.expected_calls.push(call);
         this.return_values.push(return_value);
+
+        if (this[method] === undefined) {
+            this[method] = (function () {
+                return this.register_call(method, arguments);
+            });
+        }
     }
 
     register_call(method, args) {
