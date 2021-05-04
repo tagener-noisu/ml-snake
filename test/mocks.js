@@ -48,16 +48,6 @@ class FoodMock extends Mock {
     }
 }
 
-class WindowMock extends Mock {
-    addEventListener(event, fn) {
-        return this.register_call("addEventListener", arguments);
-    }
-
-    setInterval(fn, interval) {
-        return this.register_call("setInterval", arguments);
-    }
-}
-
 class PlayerMock extends Mock {
     update() {
         this.register_call("update", arguments);
@@ -68,42 +58,8 @@ class PlayerMock extends Mock {
     }
 }
 
-class MockNeuralNet extends Mock {
-    run() {
-        return this.register_call("run", arguments);
-    }
-}
-
-class MockMath extends Mock {
-    random() {
-        return this.register_call("random", arguments);
-    }
-
-    multiply() {
-        return this.register_call("multiply", arguments);
-    }
-
-    add() {
-        return this.register_call("add", arguments);
-    }
-
-    reshape() {
-        return this.register_call("reshape", arguments);
-    }
-}
-
-class GameManagerMock extends Mock {
-    run() {
-        return this.register_call("run", arguments);
-    }
-}
-
 module.exports = {
-    WindowMock,
     SnakeMock,
     FoodMock,
     PlayerMock,
-    MockNeuralNet,
-    MockMath,
-    GameManagerMock,
 }

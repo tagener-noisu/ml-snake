@@ -4,7 +4,6 @@ const GameBoard = require("../lib/game_board");
 const Mock = require("./mock");
 
 const {
-    MockNeuralNet,
     SnakeMock,
 } = require("./mocks.js");
 
@@ -46,7 +45,7 @@ describe("AIPlayer", () => {
             1.0, GameBoard.CellType.OutOfBounds,
             2.0, GameBoard.CellType.Food
         ];
-        const nn = new MockNeuralNet();
+        const nn = new Mock();
         nn.expect_call("run", nn_args, [0.81, 0.1, 0.11]);
 
         const player = new AIPlayer(snake, game_board, nn, turn_threshold);

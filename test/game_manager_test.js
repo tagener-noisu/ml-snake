@@ -6,7 +6,6 @@ const {
     SnakeMock,
     FoodMock,
     PlayerMock,
-    WindowMock
 } = require("./mocks.js");
 
 describe("GameManager", () => {
@@ -172,7 +171,7 @@ describe("GameManager", () => {
 
     it("runs itself with interval", () => {
         const interval = 200;
-        const window = new WindowMock();
+        const window = new Mock();
         const gm = new GameManager(field_size);
 
         window.expect_call("setInterval", [gm.tick, interval]);

@@ -1,6 +1,6 @@
 const mathjs = require('mathjs');
 const {NeuralNet, relu} = require('../lib/neural_net');
-const {MockMath} = require('./mocks');
+const Mock = require("./mock");
 
 describe("relu", () => {
     it("works", () => {
@@ -11,7 +11,7 @@ describe("relu", () => {
 
 describe("NeuralNet", () => {
     it("initializes randomly", () => {
-        const math = new MockMath();
+        const math = new Mock();
         math.expect_call("random", [[3, 5], -1, 1]);
         math.expect_call("random", [[5], -1, 1]);
         math.expect_call("random", [[5, 5], -1, 1]);
@@ -38,7 +38,7 @@ describe("NeuralNet", () => {
         activation_fn.mockReturnValueOnce("layer1");
         activation_fn.mockReturnValueOnce("layer2");
 
-        const math = new MockMath();
+        const math = new Mock();
         math.expect_call("random", [[2, 4], -1, 1], "weights1");
         math.expect_call("random", [[4], -1, 1], "biases1");
         math.expect_call("random", [[4, 4], -1, 1], "weights2");
@@ -63,7 +63,7 @@ describe("NeuralNet", () => {
 
     it("returns vector representation", () => {
         const weigths = [[1, 2], [3, 4]];
-        const math = new MockMath();
+        const math = new Mock();
         math.expect_call("random", [[2, 2], -1, 1], weigths);
         math.expect_call("random", [[2], -1, 1], [5, 6]);
         math.expect_call("reshape", [weigths, [4]], [1, 2, 3, 4]);
