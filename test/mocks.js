@@ -48,20 +48,6 @@ class FoodMock extends Mock {
     }
 }
 
-class RenderMock extends Mock {
-    fill(pos) {
-        this.register_call("fill", arguments);
-    }
-
-    update() {
-        return this.register_call("update", arguments);
-    }
-
-    line(from, to) {
-        return this.register_call("line", arguments);
-    }
-}
-
 class GameBoardMock extends Mock {
     set_snake(pos) {
         this.register_call("set_snake", arguments);
@@ -140,7 +126,6 @@ class GameManagerMock extends Mock {
 
 module.exports = {
     WindowMock,
-    RenderMock,
     SnakeMock,
     FoodMock,
     GameBoardMock,

@@ -1,9 +1,6 @@
 const Vector2D = require("../lib/vector2d");
 const GameBoard = require("../lib/game_board");
-
-const {
-    RenderMock
-} = require("./mocks.js");
+const Mock = require("./mock");
 
 describe("GameBoard", () => {
     const size = new Vector2D(3, 3);
@@ -71,7 +68,7 @@ describe("GameBoard", () => {
         board.set_snake(snake_pos);
         board.set_food(food_pos);
 
-        const renderer = new RenderMock;
+        const renderer = new Mock();
         renderer.expect_call("fill", [snake_pos]);
         renderer.expect_call("fill", [food_pos]);
 

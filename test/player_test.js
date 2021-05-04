@@ -1,9 +1,9 @@
 const Vector2D = require("../lib/vector2d");
 const Player = require("../lib/player");
+const Mock = require("./mock");
 
 const {
     SnakeMock,
-    RenderMock,
     GameBoardMock,
 } = require("./mocks.js");
 
@@ -12,7 +12,7 @@ describe("Player", () => {
         const snake_pos = new Vector2D(0, 0);
         const snake = new SnakeMock();
         const board = new GameBoardMock();
-        const renderer = new RenderMock();
+        const renderer = new Mock();
 
         board.expect_call("next_nonempty_cell", [snake_pos, new Vector2D(1, 0)], new Vector2D(3, 0));
         board.expect_call("next_nonempty_cell", [snake_pos, new Vector2D(0, -1)], new Vector2D(0, -1));
