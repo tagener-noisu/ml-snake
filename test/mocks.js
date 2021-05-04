@@ -48,36 +48,6 @@ class FoodMock extends Mock {
     }
 }
 
-class MockContext extends Mock {
-    clearRect(x, y, w, h) {
-        return this.register_call("clearRect", arguments);
-    }
-
-    fillRect(x, y, w, h) {
-        return this.register_call("fillRect", arguments);
-    }
-
-    beginPath() {
-        return this.register_call("beginPath", arguments);
-    }
-
-    closePath() {
-        return this.register_call("closePath", arguments);
-    }
-
-    moveTo(x, y) {
-        return this.register_call("moveTo", arguments);
-    }
-
-    lineTo(x, y) {
-        return this.register_call("lineTo", arguments);
-    }
-
-    stroke() {
-        return this.register_call("stroke", arguments);
-    }
-}
-
 class RenderMock extends Mock {
     fill(pos) {
         this.register_call("fill", arguments);
@@ -171,7 +141,6 @@ class GameManagerMock extends Mock {
 module.exports = {
     WindowMock,
     RenderMock,
-    MockContext,
     SnakeMock,
     FoodMock,
     GameBoardMock,

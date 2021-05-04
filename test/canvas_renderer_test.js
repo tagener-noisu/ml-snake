@@ -1,16 +1,13 @@
 const Vector2D = require("../lib/vector2d");
 const CanvasRender = require("../lib/canvas_render");
-
-const {
-    MockContext,
-} = require("./mocks.js");
+const Mock = require("./mock");
 
 describe("CanvasRender", () => {
     const scale = 10;
     const field_size = new Vector2D(10, 10);
 
     it("clears the context on update", () => {
-        const context = new MockContext();
+        const context = new Mock();
         context.expect_call("clearRect",
                             [0, 0, field_size.x() * scale, field_size.y() * scale]);
         const render = new CanvasRender(context, field_size, scale);
@@ -21,7 +18,7 @@ describe("CanvasRender", () => {
 
     it("fills given coordinate", () => {
         const fill_coords = new Vector2D(4, 5);
-        const context = new MockContext();
+        const context = new Mock();
         context.expect_call("fillRect", [40, 50, 10, 10]);
         const render = new CanvasRender(context, field_size, scale);
 
@@ -33,7 +30,7 @@ describe("CanvasRender", () => {
     it("draws a line", () => {
         const line_x = new Vector2D(0, 0);
         const line_y = new Vector2D(1, 0);
-        const context = new MockContext();
+        const context = new Mock();
         const render = new CanvasRender(context, field_size, scale);
 
         context.expect_call("beginPath", []);
