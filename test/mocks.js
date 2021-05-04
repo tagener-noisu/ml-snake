@@ -31,12 +31,6 @@ class SnakeMock extends Mock {
 }
 
 class FoodMock extends Mock {
-    constructor(pos) {
-        super();
-
-        this.pos = pos;
-    }
-
     position() {
         return this.register_call("position", arguments);
     }
@@ -51,16 +45,6 @@ class FoodMock extends Mock {
 
     put(board) {
         this.register_call("put", arguments);
-    }
-}
-
-class MockRandom extends Mock {
-    generate_int(min, max) {
-        return this.register_call("generate_int", arguments);
-    }
-
-    generate_float(min, max) {
-        return this.register_call("generate_float", arguments);
     }
 }
 
@@ -218,7 +202,6 @@ module.exports = {
     FoodMock,
     GameBoardMock,
     PlayerMock,
-    MockRandom,
     ChromosomeMock,
     GeneticAlgorithmMock,
     MockNeuralNet,
