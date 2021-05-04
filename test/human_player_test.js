@@ -2,13 +2,9 @@ const Vector2D = require("../lib/vector2d");
 const HumanPlayer = require("../lib/human_player.js");
 const Mock = require("./mock");
 
-const {
-    SnakeMock,
-} = require("./mocks.js");
-
 describe("HumanPlayer", () => {
     it("adds window event listener", () => {
-        const snake = new SnakeMock();
+        const snake = new Mock();
         const window = new Mock();
         snake.expect_call("velocity", [], new Vector2D(0, 0));
         window.expect_call("addEventListener");
@@ -20,7 +16,7 @@ describe("HumanPlayer", () => {
     });
 
     it("changes direction of the snake", () => {
-        const snake = new SnakeMock();
+        const snake = new Mock();
         const window = new Mock();
         snake.expect_call("velocity", [], new Vector2D(0, 0));
         window.expect_call("addEventListener");

@@ -3,17 +3,13 @@ const AIPlayer = require("../lib/ai_player");
 const GameBoard = require("../lib/game_board");
 const Mock = require("./mock");
 
-const {
-    SnakeMock,
-} = require("./mocks.js");
-
 describe("AIPlayer", () => {
     const position = new Vector2D(0, 0);
     const velocity = new Vector2D(1, 0);
     const turn_threshold = 0.8;
 
     it("calls run() on it's neural net", () => {
-        const snake = new SnakeMock();
+        const snake = new Mock();
         snake.expect_call("position", [], position);
         snake.expect_call("velocity", [], velocity);
 
@@ -57,7 +53,7 @@ describe("AIPlayer", () => {
     });
 
     it("doesn't do anything if all probabilies less than threshold", () => {
-        const snake = new SnakeMock();
+        const snake = new Mock();
         const player = new AIPlayer(snake, null, null, turn_threshold);
         player.evaluate(position, velocity, [0.1, 0.1, 0.0]);
 
@@ -65,7 +61,7 @@ describe("AIPlayer", () => {
     });
 
     it("doesn't do anything if don't turn probability is greater", () => {
-        const snake = new SnakeMock();
+        const snake = new Mock();
         const player = new AIPlayer(snake, null, null, turn_threshold);
         player.evaluate(position, velocity, [0.82, 0.81, 0.0]);
 
@@ -73,7 +69,7 @@ describe("AIPlayer", () => {
     });
 
     it("turns left", () => {
-        const snake = new SnakeMock();
+        const snake = new Mock();
         snake.expect_call("change_direction", [velocity.turn_left()]);
 
         const player = new AIPlayer(snake, null, null, turn_threshold);
@@ -83,7 +79,7 @@ describe("AIPlayer", () => {
     });
 
     it("turns right", () => {
-        const snake = new SnakeMock();
+        const snake = new Mock();
         snake.expect_call("change_direction", [velocity.turn_right()]);
 
         const player = new AIPlayer(snake, null, null, turn_threshold);

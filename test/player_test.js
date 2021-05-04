@@ -2,14 +2,10 @@ const Vector2D = require("../lib/vector2d");
 const Player = require("../lib/player");
 const Mock = require("./mock");
 
-const {
-    SnakeMock,
-} = require("./mocks.js");
-
 describe("Player", () => {
     it("renders itself", () => {
         const snake_pos = new Vector2D(0, 0);
-        const snake = new SnakeMock();
+        const snake = new Mock();
         const board = new Mock();
         const renderer = new Mock();
 
