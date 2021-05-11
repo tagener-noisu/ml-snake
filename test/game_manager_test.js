@@ -15,6 +15,7 @@ describe("GameManager", () => {
         const gm = new GameManager(field_size, snake, food, board, render, player);
 
         board.expect_call("update", []);
+        board.expect_call("out_of_bounds", [initial_pos], false);
         snake.expect_call("position", [], initial_pos);
         snake.expect_call("update", []);
         snake.expect_call("is_dead", [], false);
@@ -32,8 +33,8 @@ describe("GameManager", () => {
     });
 
     it("stops updating it's objects on game over", () => {
-        const snake = new Mock(new Vector2D(0, 0));
-        const food = new Mock(new Vector2D(3, 7));
+        const snake = new Mock();
+        const food = new Mock();
         const render = new Mock();
         const board = new Mock();
         const player = new Mock();
@@ -66,6 +67,7 @@ describe("GameManager", () => {
         food.expect_call("update", []);
         render.expect_call("update", []);
         board.expect_call("update", []);
+        board.expect_call("out_of_bounds", [pos], false);
         player.expect_call("update", []);
         gm.update();
 
@@ -75,8 +77,8 @@ describe("GameManager", () => {
 
     it("updates score when snake eats food", () => {
         const pos = new Vector2D(4, 7);
-        const snake = new Mock(pos);
-        const food = new Mock(pos);
+        const snake = new Mock();
+        const food = new Mock();
         const render = new Mock();
         const board = new Mock();
         const player = new Mock();
@@ -91,23 +93,12 @@ describe("GameManager", () => {
         food.expect_call("update", []);
         render.expect_call("update", []);
         board.expect_call("update", []);
+        board.expect_call("out_of_bounds", [pos], false);
         player.expect_call("update", []);
 
         expect(gm.score()).toBe(0);
         gm.update();
         expect(gm.score()).toBe(1);
-    });
-
-    it("checks bounds", () => {
-        const gm = new GameManager(field_size);
-
-        expect(gm.out_of_bounds(new Vector2D(0, 0))).toBe(false);
-        expect(gm.out_of_bounds(new Vector2D(9, 9))).toBe(false);
-
-        expect(gm.out_of_bounds(new Vector2D(-1, 0))).toBe(true);
-        expect(gm.out_of_bounds(new Vector2D(10, 0))).toBe(true);
-        expect(gm.out_of_bounds(new Vector2D(0, -1))).toBe(true);
-        expect(gm.out_of_bounds(new Vector2D(0, 10))).toBe(true);
     });
 
     it("check bounds on update", () => {
@@ -120,17 +111,18 @@ describe("GameManager", () => {
         const gm = new GameManager(field_size, snake, food, board, render, player);
 
         snake.expect_call("position", [], pos);
-        snake.expect_call("grow", []);
         snake.expect_call("update", []);
-        food.expect_call("position", [], pos);
-        food.expect_call("change_position", []);
+        food.expect_call("position", [], initial_pos);
         food.expect_call("update", []);
         render.expect_call("update", []);
         board.expect_call("update", []);
+        board.expect_call("out_of_bounds", [pos], true);
         player.expect_call("update", []);
 
         gm.update();
         expect(gm.is_game_over()).toBe(true);
+
+        board.verify();
     });
 
     it("finishes the game when snake eats itself", () => {
@@ -147,6 +139,7 @@ describe("GameManager", () => {
         snake.expect_call("is_dead", [], true);
         render.expect_call("update", []);
         board.expect_call("update", []);
+        board.expect_call("out_of_bounds", [initial_pos], false);
         player.expect_call("update", []);
 
         const gm = new GameManager(field_size, snake, food, board, render, player);

@@ -84,4 +84,17 @@ describe("GameBoard", () => {
             new Vector2D(0, 0), new Vector2D(1, 0));
         expect(forward.equals(new Vector2D(2, 0))).toBe(true);
     });
+
+    it("checks bounds", () => {
+        const field_size = new Vector2D(10, 10);
+        const gm = new GameBoard(field_size);
+
+        expect(gm.out_of_bounds(new Vector2D(0, 0))).toBe(false);
+        expect(gm.out_of_bounds(new Vector2D(9, 9))).toBe(false);
+
+        expect(gm.out_of_bounds(new Vector2D(-1, 0))).toBe(true);
+        expect(gm.out_of_bounds(new Vector2D(10, 0))).toBe(true);
+        expect(gm.out_of_bounds(new Vector2D(0, -1))).toBe(true);
+        expect(gm.out_of_bounds(new Vector2D(0, 10))).toBe(true);
+    });
 });
