@@ -4,7 +4,6 @@ const Mock = require("./mock");
 
 describe("GameManager", () => {
     const initial_pos = new Vector2D(0, 0);
-    const field_size = new Vector2D(10, 10);
 
     it("updates game_board, snake, food, player and render", () => {
         const snake = new Mock();
@@ -12,7 +11,7 @@ describe("GameManager", () => {
         const render = new Mock();
         const board = new Mock();
         const player = new Mock();
-        const gm = new GameManager(field_size, snake, food, board, render, player);
+        const gm = new GameManager(snake, food, board, render, player);
 
         board.expect_call("update", []);
         board.expect_call("out_of_bounds", [initial_pos], false);
@@ -38,7 +37,7 @@ describe("GameManager", () => {
         const render = new Mock();
         const board = new Mock();
         const player = new Mock();
-        const gm = new GameManager(field_size, snake, food, board, render, player);
+        const gm = new GameManager(snake, food, board, render, player);
 
         gm.game_over();
         gm.update();
@@ -56,7 +55,7 @@ describe("GameManager", () => {
         const render = new Mock();
         const board = new Mock();
         const player = new Mock();
-        const gm = new GameManager(field_size, snake, food, board, render, player);
+        const gm = new GameManager(snake, food, board, render, player);
 
         snake.expect_call("position", [], pos);
         snake.expect_call("grow", []);
@@ -82,7 +81,7 @@ describe("GameManager", () => {
         const render = new Mock();
         const board = new Mock();
         const player = new Mock();
-        const gm = new GameManager(field_size, snake, food, board, render, player);
+        const gm = new GameManager(snake, food, board, render, player);
 
         snake.expect_call("position", [], pos);
         snake.expect_call("grow", []);
@@ -108,7 +107,7 @@ describe("GameManager", () => {
         const render = new Mock();
         const board = new Mock();
         const player = new Mock();
-        const gm = new GameManager(field_size, snake, food, board, render, player);
+        const gm = new GameManager(snake, food, board, render, player);
 
         snake.expect_call("position", [], pos);
         snake.expect_call("update", []);
@@ -142,7 +141,7 @@ describe("GameManager", () => {
         board.expect_call("out_of_bounds", [initial_pos], false);
         player.expect_call("update", []);
 
-        const gm = new GameManager(field_size, snake, food, board, render, player);
+        const gm = new GameManager(snake, food, board, render, player);
         gm.update();
 
         snake.verify();
@@ -156,7 +155,7 @@ describe("GameManager", () => {
         const render = new Mock();
         const board = new Mock();
         const player = new Mock();
-        const gm = new GameManager(field_size, snake, food, board, render, player);
+        const gm = new GameManager(snake, food, board, render, player);
 
         snake.expect_call("put", [board]);
         food.expect_call("put", [board]);
@@ -173,7 +172,7 @@ describe("GameManager", () => {
     it("runs itself with interval", () => {
         const interval = 200;
         const window = new Mock();
-        const gm = new GameManager(field_size);
+        const gm = new GameManager();
 
         window.expect_call("setInterval", [gm.tick, interval]);
         gm.run(window, interval);
