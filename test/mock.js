@@ -3,6 +3,7 @@ class Mock {
         this.call_num = 0;
         this.expected_calls = [];
         this.return_values = [];
+        this.observed_calls = [];
         this.calls = [];
     }
 
@@ -24,7 +25,8 @@ class Mock {
         const call = {};
         call[method] = [...args];
 
-        this.calls.push(call);
+        this.calls.push(method);
+        this.observed_calls.push(call);
 
         const result = this.return_values[this.call_num];
         this.call_num = this.call_num + 1;
@@ -32,7 +34,7 @@ class Mock {
     }
 
     verify() {
-        expect(this.calls).toEqual(this.expected_calls);
+        expect(this.observed_calls).toEqual(this.expected_calls);
     }
 }
 
