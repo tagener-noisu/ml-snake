@@ -168,15 +168,4 @@ describe("GameManager", () => {
         board.verify();
         player.verify();
     });
-
-    it("runs itself with interval", () => {
-        const interval = 200;
-        const window = new Mock();
-        const gm = new GameManager();
-
-        window.expect_call("setInterval", [gm.tick, interval]);
-        gm.run(window, interval);
-
-        window.verify();
-    });
 });
