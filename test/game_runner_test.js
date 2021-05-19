@@ -12,6 +12,15 @@ describe("GameRunner", () => {
         window.verify();
     });
 
+    it("doesn't request animation frames when not started", () => {
+        const window = new Mock();
+        const runner = new GameRunner(window);
+
+        runner.tick(0);
+
+        window.verify();
+    });
+
     it("calls game_manager.tick() on framerate", () => {
         const framerate = 5;
         const frame_ms = 1000 / framerate;
